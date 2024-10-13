@@ -1,12 +1,16 @@
+import { handleFsOperation } from "../fs/handleFsOperation.js";
 import { calculateHash } from "../hash/calcHash.js";
+import { createPath } from "../navigation/createPath.js";
 import { goToPath } from "../navigation/goToPath.js";
 import { goUp } from "../navigation/goUp.js";
 import { printList } from "../navigation/printList.js";
 import { handleOsOperation } from "../systemInfo/systemInfo.js";
+import { compress } from "../zip/compress.js";
+import { decompress } from "../zip/decompress.js";
 
 export async function handleData (data) {
-  // console.log('Вы ввели ', data);
   const input = data.trim();
+  const fsCommands = ['cat', 'add', 'rn', 'cp', 'mv', 'rm']
 
   if (input === '.exit') {
     process.exit();
@@ -15,6 +19,11 @@ export async function handleData (data) {
   try {
     if (input === 'up') {
       goUp()
+      return
+    }
+
+    if (fsCommands.some((el) => input.startsWith(el))) {
+      handleFsOperation(input)
       return
     }
 
@@ -41,8 +50,26 @@ export async function handleData (data) {
       return
     }
 
+    if (input.startsWith('compress')) {
+      const paths = input.replace('compress', '').trim()
+      const pathFrom = createPath(paths.split(' ')[0])
+      const pathTo = createPath(paths.split(' ')[1])
+
+      compress(pathFrom, pathTo)
+      return
+    }
+
+    if (input.startsWith('decompress')) {
+      const paths = input.replace('decompress', '').trim()
+      const pathFrom = createPath(paths.split(' ')[0])
+      const pathTo = createPath(paths.split(' ')[1])
+
+      decompress(pathFrom, pathTo)
+      return
+    }
+
     console.log('Invalid input');
   } catch (err) {
-    console.log('Operation failed');
+    console.log('Operation failed:', err.message);
   }
 }
