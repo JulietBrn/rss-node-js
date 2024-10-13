@@ -5,6 +5,8 @@ import { remove } from './scritp/remove.js';
 import { read } from './scritp/read.js';
 import { create } from './scritp/create.js';
 import { rename } from './scritp/rename.js';
+import { copyFile } from './scritp/copyFile.js';
+import { moveFile } from './scritp/moveFile.js';
 
 export function handleFsOperation(input) {
   if (input.startsWith('rm')) {
@@ -34,5 +36,21 @@ export function handleFsOperation(input) {
     const newFileName = fileName.split(' ')[1]
 
     rename(filePath, newFileName)
+  }
+
+  if (input.startsWith('cp')) {
+    const fileName = input.replace('cp', '').trim()
+    const filePath = createPath(fileName.split(' ')[0])
+    const newFilePath = createPath(fileName.split(' ')[1])
+
+    copyFile(filePath, newFilePath)
+  }
+
+  if (input.startsWith('mv')) {
+    const fileName = input.replace('mv', '').trim()
+    const filePath = createPath(fileName.split(' ')[0])
+    const newFilePath = createPath(fileName.split(' ')[1])
+
+    moveFile(filePath, newFilePath)
   }
 }
