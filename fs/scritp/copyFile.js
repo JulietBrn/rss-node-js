@@ -32,5 +32,4 @@ export function copyFile (pathFrom, pathTo, callback) {
       )
     })
   })
-
 }
