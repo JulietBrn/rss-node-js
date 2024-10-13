@@ -2,9 +2,9 @@ import { calculateHash } from "../hash/calcHash.js";
 import { goToPath } from "../navigation/goToPath.js";
 import { goUp } from "../navigation/goUp.js";
 import { printList } from "../navigation/printList.js";
-// import os from 'os';
+import { handleOsOperation } from "../systemInfo/systemInfo.js";
 
-export function handleData (data) {
+export async function handleData (data) {
   // console.log('Вы ввели ', data);
   const input = data.trim();
 
@@ -29,9 +29,14 @@ export function handleData (data) {
       return
     }
 
+    if (input.startsWith('os --')) {
+      const command = input.replace('os --', '').trim()
+      handleOsOperation(command)
+      return
+    }
+
     if (input.startsWith('hash')) {
       const path = input.replace('hash', '').trim()
-      // console.log(os.homedir());
       calculateHash(path)
       return
     }

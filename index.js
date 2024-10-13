@@ -3,12 +3,12 @@ import { sayBye }  from "./greeting/bye.js";
 import { handleData } from "./handleData/handleData.js";
 import { printCurrentPath } from "./navigation/path.js";
 
-function startFileManager() {
+async function startFileManager() {
   greeting.getUserName();
   greeting.greeting();
 
-  process.stdin.on('data', (data) => {
-    handleData(data.toString())
+  process.stdin.on('data', async (data) => {
+    await handleData(data.toString())
     printCurrentPath()
   });
 
@@ -21,4 +21,4 @@ function startFileManager() {
   });
 }
 
-startFileManager();
+await startFileManager();
