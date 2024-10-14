@@ -7,6 +7,7 @@ export function copyFile (pathFrom, pathTo, callback) {
   fs.stat(pathFrom, (err, stats) => {
     if (err || !stats.isFile()) {
       console.log('Operation failed');
+      if (callback) callback(err);
       return;
     }
 
@@ -25,8 +26,9 @@ export function copyFile (pathFrom, pathTo, callback) {
         (err) => {
           if(err) {
             console.log('Operation failed', err.message)
+            if (callback) callback(err);
           } else {
-            callback(null);
+            if (callback) callback(null);
           }
         }
       )
